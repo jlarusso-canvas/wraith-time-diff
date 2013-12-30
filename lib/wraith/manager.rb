@@ -113,7 +113,7 @@ class WraithManager
         label = path.gsub('/', '_')
       end
 
-      FileUtils.mkdir("#{wraith.directory}/#{label}")
+      FileUtils.mkdir("#{wraith.directory}/#{label}") unless File.exists?("#{wraith.directory}/#{label}")
       FileUtils.mkdir_p("#{wraith.directory}/thumbnails/#{label}")
 
       compare_url = wraith.comp_domain + path if !wraith.comp_domain.nil?
