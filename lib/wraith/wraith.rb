@@ -2,9 +2,11 @@ require 'yaml'
 
 class Wraith::Wraith
   attr_accessor :config
+  attr_reader :timestamp
 
   def initialize(config_name)
     @config = YAML::load(File.open("configs/#{config_name}.yaml"))
+    @timestamp = Time.now.to_i
   end
 
   def directory
