@@ -32,8 +32,8 @@ class WraithManager
   end
 
   def self.reset_shots_folder(dir)
-    FileUtils.rm_rf("./#{dir}")
-    FileUtils.mkdir("#{dir}")
+    FileUtils.mkdir("#{dir}/archive") unless File.exist?("#{dir}/archive")
+    FileUtils.rm_rf("#{dir}/!(archive)")
   end
 
   def reset_shots_folder
