@@ -16,7 +16,7 @@ directory:
 
 # Add only 2 domains, key will act as a label
 domains:
-  new: "http://ec2-107-20-238-124.compute-1.amazonaws.com/"
+  new: "http://ec2-107-20-238-124.compute-1.amazonaws.com"
   old: "http://sports.sho.com"
 
 #Type screen widths below, here are a couple of examples
