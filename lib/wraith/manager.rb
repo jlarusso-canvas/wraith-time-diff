@@ -24,7 +24,7 @@ class WraithManager
 
     Dir.foreach("#{wraith.directory}") do |item|
       next if item == '.' or item == '..' or item == 'archive'
-      FileUtils.cp_rf(item, archive_path)
+      FileUtils.mv("#{wraith.directory}/#{item}", archive_path)
     end
   end
 
