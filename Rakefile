@@ -60,3 +60,7 @@ end
 task :grab => [:reset_shots_folder, :check_for_paths, :save_images, :generate_thumbnails, :generate_gallery] do
   puts 'Done!';
 end
+
+task :archive do
+  @wraith_manager.archive
+end

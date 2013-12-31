@@ -17,6 +17,17 @@ class WraithManager
     wraith.directory
   end
 
+  def archive
+    archive_path ="#{wraith.directory}/archive/#{wraith.timestamp}"
+    puts "Archiving set into #{archive_path}"
+    FileUtils.mkdir(archive_path)
+
+    Dir.foreach("#{wraith.directory}") do |item|
+      next if item == '.' or item == '..' or item == 'archive'
+      FileUtils.cp_rf(item, archive_path)
+    end
+  end
+
   def compare_images
     files = Dir.glob("#{wraith.directory}/*/*.png").sort
 
