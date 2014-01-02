@@ -69,7 +69,8 @@ class WraithManager
     labels.each do |label|
       file_arguments = "#{base_dir}/#{label}.png #{compare_dir}/#{label}.png #{diff_dir}/diff_#{label}.png"
 
-      `compare -fuzz #{wraith.fuzz} -metric AE -highlight-color blue #{file_arguments}`
+      puts `compare -fuzz #{wraith.fuzz} -metric AE -highlight-color blue #{file_arguments}`, " bytes diff for '#{label}'."
+      puts ""
     end
     puts ""
     puts color "Saved diffs in #{diff_dir}"
