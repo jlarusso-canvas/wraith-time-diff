@@ -27,7 +27,7 @@ class WraithManager
     FileUtils.mkdir(archive_path)
 
     Dir.foreach("#{wraith.directory}") do |item|
-      next if item == '.' or item == '..' or item == 'archive'
+      next if item == '.' or item == '..' or item == 'archive' or item == 'diffs'
       FileUtils.mv("#{wraith.directory}/#{item}", archive_path)
     end
   end
@@ -50,6 +50,7 @@ class WraithManager
     puts ""
     routes = File.read('spider.txt')
     labels = eval(routes).keys
+    today = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
 
     FileUtils.mkdir("#{wraith.directory}/diffs") unless File.exist?("#{wraith.directory}/diffs")
     timestamp_dirs = Dir.glob("#{wraith.directory}/archive/*").last(2)
@@ -60,7 +61,7 @@ class WraithManager
 
     base_dir = timestamp_dirs[1]
     compare_dir = timestamp_dirs[0]
-    diff_dir = "#{wraith.directory}/diffs/diff_#{timestamps.join("_from_")}"
+    diff_dir = "#{wraith.directory}/diffs/#{today}_#{timestamps.join("_from_")}"
 
     FileUtils.rm_rf(diff_dir) if File.exist?(diff_dir)
     FileUtils.mkdir(diff_dir)
@@ -68,7 +69,7 @@ class WraithManager
     labels.each do |label|
       file_arguments = "#{base_dir}/#{label}.png #{compare_dir}/#{label}.png #{diff_dir}/diff_#{label}.png"
 
-      `compare -fuzz 20% -metric AE -highlight-color blue #{file_arguments}`
+      `compare -fuzz #{wraith.fuzz} -metric AE -highlight-color blue #{file_arguments}`
     end
     puts ""
     puts color "Saved diffs in #{diff_dir}"

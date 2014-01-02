@@ -1,1 +1,1 @@
-{"home"=>"/", "boxing"=>"/boxing", "mma"=>"/videos/MMA", "football"=>"/videos/Football", "nascar"=>"/videos/NASCAR", "baseball"=>"/videos/Baseball"}
+{"home"=>"/", "boxing"=>"/boxing", "programs"=>"/programs", "live"=>"/live", "tvschedule"=>"/tvschedule", "documentaries"=>"/documentaries"}
