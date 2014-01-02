@@ -46,6 +46,35 @@ class WraithManager
     end
   end
 
+  def make_diffs
+    puts ""
+    routes = File.read('spider.txt')
+    labels = eval(routes).keys
+
+    FileUtils.mkdir("#{wraith.directory}/diffs") unless File.exist?("#{wraith.directory}/diffs")
+    timestamp_dirs = Dir.glob("#{wraith.directory}/archive/*").last(2)
+
+    timestamps = timestamp_dirs.map do |dir|
+      dir.match(/\d{10}/)[0].to_i
+    end
+
+    base_dir = timestamp_dirs[1]
+    compare_dir = timestamp_dirs[0]
+    diff_dir = "#{wraith.directory}/diffs/diff_#{timestamps.join("_from_")}"
+
+    FileUtils.rm_rf(diff_dir) if File.exist?(diff_dir)
+    FileUtils.mkdir(diff_dir)
+
+    labels.each do |label|
+      file_arguments = "#{base_dir}/#{label}.png #{compare_dir}/#{label}.png #{diff_dir}/diff_#{label}.png"
+
+      `compare -fuzz 20% -metric AE -highlight-color blue #{file_arguments}`
+    end
+    puts ""
+    puts color "Saved diffs in #{diff_dir}"
+    puts ""
+  end
+
   def self.reset_shots_folder(dir)
     FileUtils.mkdir("#{dir}/archive") unless File.exist?("#{dir}/archive")
     FileUtils.rm_rf("#{dir}/!(archive)")
@@ -139,12 +168,12 @@ class WraithManager
         wraith.engine.each do |type, engine|
           # Used for headless browsers
           unless compare_url.nil?
-            compare_file_name = "#{wraith.directory}/#{label}_#{wraith.comp_domain_label.downcase}_#{width}_compare.png"
+            compare_file_name = "#{wraith.directory}/#{label}_compare.png"
             wraith.capture_page_image engine, compare_url, width, compare_file_name
           end
 
           unless base_url.nil?
-            base_file_name = "#{wraith.directory}/#{label}_#{wraith.base_domain_label.downcase}_#{width}.png"
+            base_file_name = "#{wraith.directory}/#{label}.png"
             wraith.capture_page_image engine, base_url, width, base_file_name
           end
         end

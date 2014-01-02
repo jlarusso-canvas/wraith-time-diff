@@ -67,3 +67,7 @@ end
 task :archive do
   @wraith_manager.archive
 end
+
+task :diff do
+  @wraith_manager.make_diffs
+end
