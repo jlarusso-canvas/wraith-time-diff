@@ -3,6 +3,7 @@ $:.unshift File.join(File.dirname(__FILE__), 'lib')
 require 'bundler/gem_tasks'
 require 'wraith/manager'
 
+
 @wraith_manager = WraithManager.new('config')
 
 task :config, [:args] do |t, args|
@@ -57,7 +58,9 @@ task :grabber, [:args] do |t, args|
   Rake::Task["grab"].invoke
 end
 
-task :grab => [:reset_shots_folder, :check_for_paths, :save_images, :generate_thumbnails, :generate_gallery] do
+task :cap => [:grab, :archive]
+
+task :grab => [:reset_shots_folder, :check_for_paths, :save_images] do
   puts 'Done!';
 end
 

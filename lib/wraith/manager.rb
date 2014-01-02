@@ -13,13 +13,17 @@ class WraithManager
     @wraith = Wraith::Wraith.new(config)
   end
 
+  def color(str)
+    "\033[33m#{str}\033[0m"
+  end
+
   def directory
     wraith.directory
   end
 
   def archive
     archive_path ="#{wraith.directory}/archive/#{wraith.timestamp}"
-    puts "Archiving set into #{archive_path}"
+    puts color "Archiving set into #{archive_path}"
     FileUtils.mkdir(archive_path)
 
     Dir.foreach("#{wraith.directory}") do |item|
@@ -117,15 +121,15 @@ class WraithManager
     end
 
     p.each do |label, path|
-      puts "processing '#{label}' '#{path}'"
+      puts color "processing '#{label}' '#{path}'"
 
       if !path
         path = label
         label = path.gsub('/', '_')
       end
 
-      FileUtils.mkdir("#{wraith.directory}/#{label}") unless File.exists?("#{wraith.directory}/#{label}")
-      FileUtils.mkdir_p("#{wraith.directory}/thumbnails/#{label}")
+      # FileUtils.mkdir("#{wraith.directory}/#{label}") unless File.exists?("#{wraith.directory}/#{label}")
+      # FileUtils.mkdir_p("#{wraith.directory}/thumbnails/#{label}")
 
       compare_url = wraith.comp_domain + path if !wraith.comp_domain.nil?
       base_url = wraith.base_domain + path if !wraith.base_domain.nil?
@@ -135,12 +139,12 @@ class WraithManager
         wraith.engine.each do |type, engine|
           # Used for headless browsers
           unless compare_url.nil?
-            compare_file_name = "#{wraith.directory}/#{label}/#{width}_#{engine}_#{wraith.comp_domain_label.downcase}.png"
+            compare_file_name = "#{wraith.directory}/#{label}_#{wraith.comp_domain_label.downcase}_#{width}_compare.png"
             wraith.capture_page_image engine, compare_url, width, compare_file_name
           end
 
           unless base_url.nil?
-            base_file_name = "#{wraith.directory}/#{label}/#{width}_#{engine}_#{wraith.base_domain_label.downcase}.png"
+            base_file_name = "#{wraith.directory}/#{label}_#{wraith.base_domain_label.downcase}_#{width}.png"
             wraith.capture_page_image engine, base_url, width, base_file_name
           end
         end
@@ -157,7 +161,7 @@ class WraithManager
       end
 
       FileUtils.mkdir("#{wraith.directory}/#{label}")
-      FileUtils.mkdir_p("#{wraith.directory}/thumbnails/#{label}")
+      # FileUtils.mkdir_p("#{wraith.directory}/thumbnails/#{label}")
 
       compare_url = wraith.comp_domain + path
       base_url = wraith.base_domain + path
