@@ -48,12 +48,21 @@ class WraithManager
 
   def make_diffs
     puts ""
+
+    dirs = Dir.glob("#{wraith.directory}/archive/*")
+    if dirs.size < 2
+      puts "You must have more than one timestamp directory in order to make a diff."
+      puts "Please run 'rake cap' again"
+      return
+    end
+
+    timestamp_dirs = dirs.last(2)
+    FileUtils.mkdir("#{wraith.directory}/diffs") unless File.exist?("#{wraith.directory}/diffs")
+
+
     routes = File.read('spider.txt')
     labels = eval(routes).keys
     today = "#{Time.now.month}-#{Time.now.day}-#{Time.now.year}"
-
-    FileUtils.mkdir("#{wraith.directory}/diffs") unless File.exist?("#{wraith.directory}/diffs")
-    timestamp_dirs = Dir.glob("#{wraith.directory}/archive/*").last(2)
 
     timestamps = timestamp_dirs.map do |dir|
       dir.match(/\d{10}/)[0].to_i
