@@ -15,7 +15,7 @@ The changes are visually tracked by taking screenshots and generating diff image
 Change domain, fuzz, and other things.
 
 - `/lib/wraith/javascript/snap.js`
-Mess with timeout to fix race conditions. (rarely necessary)
+Mess with timeout to fix race conditions.
 
 ####Here are the commands:
 - `rake cap`
